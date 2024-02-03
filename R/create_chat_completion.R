@@ -112,6 +112,7 @@ create_chat_completion <-
            temperature = 1, top_p = 1,
            n = 1,
            stream = FALSE, stop = NULL, max_tokens = NULL, presence_penalty = 0,
+           response_format = c("text", "json_object"),
            frequency_penalty = 0, logit_bias = NULL, user = NULL,
            openai_api_key = Sys.getenv("OPENAI_API_KEY"),
            openai_organization = NULL) {
@@ -200,6 +201,7 @@ create_chat_completion <-
     body[["stop"]] <- stop
     body[["max_tokens"]] <- max_tokens
     body[["presence_penalty"]] <- presence_penalty
+    body[["response_format"]] <- match.arg(response_format)
     body[["frequency_penalty"]] <- frequency_penalty
     body[["logit_bias"]] <- logit_bias
     body[["user"]] <- user
