@@ -10,7 +10,7 @@
 #' @param model required; a length one character vector.
 #' @param messages required; defaults to `NULL`; a list in the following
 #'   format: `list(list("role" = "user", "content" = "Hey! How old are you?")`
-#' @param functions optional; defaults to `NULL`; OpenAI function definitions
+#' @param tools optional; defaults to `NULL`; OpenAI tools definitions
 #' @param temperature required; defaults to `1`; a length one numeric vector
 #'   with the value between `0` and `2`.
 #' @param top_p required; defaults to `1`; a length one numeric vector with the
@@ -72,9 +72,10 @@
 #'     )
 #'   )
 #'
-#' functions <-
+#' tools <- list(
 #'   list(
-#'     list(
+#'     type = "function",
+#'     function = list(
 #'       name = "get_current_weather",
 #'       description = "Get the current weather",
 #'       parameters =
@@ -94,11 +95,11 @@
 #'                 description = "The temperature unit to use.
 #'                                     Infer this from the users location."
 #'               )
-#'             ),
-#'           required = c("location", "format")
-#'         )
-#'     )
+#'           ),
+#'         required = c("location", "format")
+#'       )
 #'   )
+#' )
 #'
 #' create_chat_completion(
 #'   model = "gpt-3.5-turbo-0613",
@@ -108,7 +109,7 @@
 #' @export
 
 create_chat_completion <-
-  function(model, messages = NULL, functions = NULL,
+  function(model, messages = NULL, tools = NULL,
            temperature = 1, top_p = 1,
            n = 1,
            stream = FALSE, stop = NULL, max_tokens = NULL, presence_penalty = 0,
@@ -193,7 +194,7 @@ create_chat_completion <-
     body <- list()
     body[["model"]] <- model
     body[["messages"]] <- messages
-    body[["functions"]] <- functions
+    body[["tools"]] <- tools
     body[["temperature"]] <- temperature
     body[["top_p"]] <- top_p
     body[["n"]] <- n

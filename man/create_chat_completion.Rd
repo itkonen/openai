@@ -7,7 +7,7 @@
 create_chat_completion(
   model,
   messages = NULL,
-  functions = NULL,
+  tools = NULL,
   temperature = 1,
   top_p = 1,
   n = 1,
@@ -15,6 +15,7 @@ create_chat_completion(
   stop = NULL,
   max_tokens = NULL,
   presence_penalty = 0,
+  response_format = c("text", "json_object"),
   frequency_penalty = 0,
   logit_bias = NULL,
   user = NULL,
@@ -28,7 +29,7 @@ create_chat_completion(
 \item{messages}{required; defaults to \code{NULL}; a list in the following
 format: \verb{list(list("role" = "user", "content" = "Hey! How old are you?")}}
 
-\item{functions}{optional; defaults to \code{NULL}; OpenAI function definitions}
+\item{tools}{optional; defaults to \code{NULL}; OpenAI tools definitions}
 
 \item{temperature}{required; defaults to \code{1}; a length one numeric vector
 with the value between \code{0} and \code{2}.}
@@ -113,9 +114,10 @@ messages <-
     )
   )
 
-functions <-
+tools <- list(
   list(
-    list(
+    type = "function",
+    function = list(
       name = "get_current_weather",
       description = "Get the current weather",
       parameters =
@@ -135,11 +137,11 @@ functions <-
                 description = "The temperature unit to use.
                                     Infer this from the users location."
               )
-            ),
-          required = c("location", "format")
-        )
-    )
+          ),
+        required = c("location", "format")
+      )
   )
+)
 
 create_chat_completion(
   model = "gpt-3.5-turbo-0613",
