@@ -202,7 +202,7 @@ create_chat_completion <-
     body[["stop"]] <- stop
     body[["max_tokens"]] <- max_tokens
     body[["presence_penalty"]] <- presence_penalty
-    body[["response_format"]] <- match.arg(response_format)
+    body[["response_format"]] <- list(type = match.arg(response_format))
     body[["frequency_penalty"]] <- frequency_penalty
     body[["logit_bias"]] <- logit_bias
     body[["user"]] <- user
